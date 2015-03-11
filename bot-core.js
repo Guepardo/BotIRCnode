@@ -40,6 +40,8 @@ function onMessage(data){
 	if( data.indexOf('004') > -1){
 		console.log('Você está logado no servidor');
 		client.write('JOIN ' + CHANNEL +' \n\r');
+		client.write('JOIN #english \n\r');
+		client.write('JOIN #portugese \n\r');
 		return; 
 	}
 
