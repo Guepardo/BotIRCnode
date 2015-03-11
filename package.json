@@ -4,7 +4,7 @@
     "private": "true",
     "version": "1.0.0",
 	"scripts": {
-	   "start": "bot-core.js"
+	   "start": "node bot-core.js"
 	},
 	"main": "bot-core.js",
 	"dependencies": {}
