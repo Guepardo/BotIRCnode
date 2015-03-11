@@ -2,12 +2,12 @@ var net  = require('net');
 
 var HOST    = 'irc.icq.com';
 var PORT    =  6667;
-var NICK    = 'Percival'; 
-var CHANNEL = '#nada'; 
+var NICK    = '[B]igBrother'; 
+var CHANNEL = '#brasil'; 
 
 var status = false;
 
-var storage = new Array(); 
+var count = 0; 
 
 console.log('Server listening on ' + HOST +':'+ PORT);
 
@@ -35,7 +35,8 @@ client.on('close', function() {
 function onMessage(data){
 	//console.log('DATA: ' + data);
 	data = new String(data); 
-
+	count++; 
+	
 	if( data.indexOf('004') > -1){
 		console.log('Você está logado no servidor');
 		client.write('JOIN ' + CHANNEL +' \n\r');
@@ -54,7 +55,6 @@ function onMessage(data){
 
 	if( data.search('PRIVMSG') > -1){
 		var m = sliceMessage(data); 
-		storage.push(m); 
 		onPRIVMSG(m); 
 		console.log('Nome '+ m.nick +' : '+m.msg); 
 	}
@@ -115,9 +115,7 @@ var http = require('http');
 var server = http.createServer(function (request, response) {
   try{
   	response.writeHead(200, {"Content-Type": "text/plain"});
-	var text = "Server: "+HOST+"\n Channel: "+CHANNEL+"\n NameBot: "+NICK+"\n Stauts: "+ ((status) ? 'Conectado' : 'Desconectado')+"\n Qtd Msg: "+ storage.length +'\n'; 
-	for(var a  in storage)
-	  text += 'Nome '+ a.nick +' : ' + a.msg+'\n'; 
+	var text = "Server: "+HOST+"\n Channel: "+CHANNEL+"\n NameBot: "+NICK+"\n Stauts: "+ ((status) ? 'Conectado' : 'Desconectado')+"\n Qtd Msg: "+ count +'\n'; 
 	response.end(text);
   }catch(error){
   	console.log(error); 
