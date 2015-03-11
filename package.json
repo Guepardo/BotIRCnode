@@ -1,0 +1,11 @@
+{
+	"name": "Guepardo",
+    "description": "ow redhat server",
+    "private": "true",
+    "version": "1.0.0",
+	"scripts": {
+	   "start": "bot-core.js"
+	},
+	"main": "bot-core.js",
+	"dependencies": {}
+}
