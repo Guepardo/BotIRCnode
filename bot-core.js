@@ -62,11 +62,9 @@ function onMessage(data){
 }
 //Function fot treatment PRIVMSG
 function onPRIVMSG(m){
-	sendPRIVMSG('Your command is : ' + m.msg.indexOf('.')); 
-		if(m.msg.indexOf('.') == 0 ){
-			sendPRIVMSG('Your command is : ' + m.msg.indexOf('.')); 
-		}
+	
 }
+
 //Função para tratamento ping request
 function onPingRequest(data){
 	console.log('PONG'); 
