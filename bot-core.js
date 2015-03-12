@@ -69,7 +69,8 @@ function onPRIVMSG(m) {
 // Function for Robô Ed
 function edSays(m) {
 	try {
-		var msg = '/?bot=ss&msg=' + encodeURIComponent(m.msg || '');
+		var msg = '/?bot=ss&msg='
+				+ encodeURIComponent(m.msg.substring(1, m.msg.length) || '');
 
 		var options = {
 			host : 'bots-caipira.rhcloud.com',
