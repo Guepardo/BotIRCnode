@@ -87,9 +87,9 @@ function edSays(m) {
 			// the whole response has been recieved, so we just print it out
 			// here
 			response.on('end', function() {
-				var text = JSON.parse(str).data.trim(); 
+				var text = JSON.parse(str).data.sentence_resp.trim();
 				text = text.replace('<[^>]*>', '');
-				
+
 				sendPRIVMSG(m.channel, m.nick + ': ' + text);
 			});
 		}
