@@ -62,14 +62,14 @@ function onMessage(data) {
 }
 // Function fot treatment PRIVMSG
 function onPRIVMSG(m) {
-	if (m.msg.indexOf('.') == 0)
+	if (m.msg.indexOf('.') == 0 || m.msg.search(NICK) > -1)
 		edSays(m);
 }
 
 // Function for Robô Ed
 function edSays(m) {
 	try {
-		var msg = '/?bot=ed&msg=' + encodeURIComponent(m.msg || '');
+		var msg = '/?bot=ss&msg=' + encodeURIComponent(m.msg || '');
 
 		var options = {
 			host : 'bots-caipira.rhcloud.com',
@@ -87,7 +87,10 @@ function edSays(m) {
 			// the whole response has been recieved, so we just print it out
 			// here
 			response.on('end', function() {
-				sendPRIVMSG(m.channel, m.nick + ': ' + JSON.parse(str).data);
+				var text = JSON.parse(str).data.trim(); 
+				text = text.replace('<[^>]*>', '');
+				
+				sendPRIVMSG(m.channel, m.nick + ': ' + text);
 			});
 		}
 
@@ -157,9 +160,9 @@ var server = http.createServer(function(request, response) {
 
 // Servidor de páginas web ouvindo na porta 8000
 var port = process.env.OPENSHIFT_NODEJS_PORT || 8080; // Port 8080 if you run
-														// locally
+// locally
 var address = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1"; // Listening to
-																// localhost if
-																// you run
-																// locally
+// localhost if
+// you run
+// locally
 server.listen(port, address);
