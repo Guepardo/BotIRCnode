@@ -4,7 +4,7 @@ var http = require('http');
 var HOST = 'irc.icq.com';
 var PORT = 6667;
 var NICK = '[B]igBrother';
-var CHANNEL = '#nada';
+var CHANNEL = '#brasil';
 
 var status = false;
 
