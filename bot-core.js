@@ -4,7 +4,7 @@ var http = require('http');
 var HOST = 'irc.icq.com';
 var PORT = 6667;
 var NICK = '[B]igBrother';
-var CHANNEL = '#brasil';
+var CHANNEL = '#nada';
 
 var status = false;
 
@@ -87,7 +87,7 @@ function edSays(m) {
 			// the whole response has been recieved, so we just print it out
 			// here
 			response.on('end', function() {
-				var text = JSON.parse(str).data.sentence_resp.trim();
+				var text = JSON.parse(str).sentence_resp.trim();
 				text = text.replace('<[^>]*>', '');
 
 				sendPRIVMSG(m.channel, m.nick + ': ' + text);
