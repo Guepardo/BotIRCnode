@@ -1,5 +1,13 @@
 var net = require('net');
 var http = require('http');
+var Twitter = require('twitter');
+
+var clientTwitter = new Twitter({
+  consumer_key: 'KPM9rOwkcjJxEjSNWvjIKE6B7',
+  consumer_secret: '8jAaW5jebLPkKdMERAAWsx76jFQ4R8xVbUvFqH1E7ZGF3Yqp47',
+  access_token_key: '189759942-jYe5zFt9fYFTMvKdc8kWtFL0EaYuxlMHCYokTKR1',
+  access_token_secret: 'u4oIfp7GVyfVYhmsQarYjUEBT8XmluxbTCEQ7lzGEPqrg',
+});
 
 var HOST = 'irc.icq.com';
 var PORT = 6667;
@@ -11,6 +19,10 @@ var status = false;
 var count = 0;
 
 console.log('Server listening on ' + HOST + ':' + PORT);
+
+String.prototype.replaceAll = function(target, replacement) {
+	return this.split(target).join(replacement);
+};
 
 // ------------SOCKET-------------------
 var client = new net.Socket();
@@ -89,7 +101,7 @@ function edSays(m) {
 			// here
 			response.on('end', function() {
 				var text = JSON.parse(str).sentence_resp.trim();
-				text = text.replace('<[^>]*>', '');
+				text = text.replaceAll('<[^>]*>', '');
 
 				sendPRIVMSG(m.channel, m.nick + ': ' + text);
 			});
@@ -139,7 +151,32 @@ function sliceMessage(data) {
 	user = temp[1];
 	return new Message(nick, user, ip, channel, text);
 }
+// ------------------------------FEED TWITTER --------------
+var time = (1000 * 60 ) * 20; 
 
+var myInterval = setInterval(function(){
+  	 var params = {screen_name: 'g1'};
+		clientTwitter.get('statuses/user_timeline', params, function(error, tweets, response){
+	  	if (!error) {
+	  		var largeId = 0; 
+	  		var value   = 0; 
+	  		for(var a = 0 ; a < tweets.length ; a++ ){
+	  			if(value < tweets[a].retweet_count){
+	  				largeId = a; 
+	  				value = tweets[a].retweet_count; 
+	  				 console.log('Notícia: '+tweets[a].text+' | Fonte: ' + tweets[a].user.name + ' Retweet ['+tweets[a].retweet_count+']');	
+	  			}
+
+	  		}
+	  		console.log(largeId); 
+	  		 var msg = 'Notícia ['+tweets[largeId].text+'] | Fonte ' + tweets[largeId].user.name + ', Retweet ['+tweets[largeId].retweet_count+'] (Tweet mais relevantes entre ' + tweets.length +' tweets)'; 
+	  
+	   		 sendPRIVMSG(CHANNEL,msg)
+	  	}else{
+	  		console.log('ocorreu algum erro'); 
+	  	}
+	}); 
+},time);
 // ------------------------------LOGS VIA PÁGINAS HTML--------------
 
 // Configurando requests e response do server.

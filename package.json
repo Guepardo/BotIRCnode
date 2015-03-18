@@ -7,5 +7,5 @@
 	   "start": "node bot-core.js"
 	},
 	"main": "bot-core.js",
-	"dependencies": {}
+	"dependencies": { "twitter" : ""}
 }
