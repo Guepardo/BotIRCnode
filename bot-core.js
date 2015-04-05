@@ -1,14 +1,13 @@
 var net = require('net');
 var http = require('http');
 var Twitter = require('twitter');
-
+var bot  = new Bot();
 var clientTwitter = new Twitter({
   consumer_key: 'KPM9rOwkcjJxEjSNWvjIKE6B7',
   consumer_secret: '8jAaW5jebLPkKdMERAAWsx76jFQ4R8xVbUvFqH1E7ZGF3Yqp47',
   access_token_key: '189759942-jYe5zFt9fYFTMvKdc8kWtFL0EaYuxlMHCYokTKR1',
   access_token_secret: 'u4oIfp7GVyfVYhmsQarYjUEBT8XmluxbTCEQ7lzGEPqrg',
 });
-
 var HOST = 'irc.icq.com';
 var PORT = 6667;
 var NICK = '[B]igBrother';
@@ -19,11 +18,6 @@ var status = false;
 var count = 0;
 
 console.log('Server listening on ' + HOST + ':' + PORT);
-
-String.prototype.replaceAll = function(target, replacement) {
-	return this.split(target).join(replacement);
-};
-
 // ------------SOCKET-------------------
 var client = new net.Socket();
 client.connect(PORT, HOST, function() {
@@ -67,7 +61,6 @@ function onMessage(data) {
 	}
 
 	if (data.search('PRIVMSG') > -1) {
-		;
 		onPRIVMSG(sliceMessage(data));
 	}
 
@@ -75,43 +68,64 @@ function onMessage(data) {
 // Function fot treatment PRIVMSG
 function onPRIVMSG(m) {
 	if (m.msg.indexOf('.') == 0 || m.msg.search(NICK) > -1)
-		edSays(m);
+		bot.edSays(m);
+	if (m.msg.indexOf(':mode:') == 0 )
+		bot.switchMode(); 
 }
 
 // Function for Robô Ed
-function edSays(m) {
-	try {
-		var msg = '/?bot=ss&msg='
-				+ encodeURIComponent(m.msg.substring(1, m.msg.length) || '');
+ 
+function Bot(){	
+	this.switchMode  =  function(){
+		if(modebot == 'ed' )
+			modebot = 'ss'; 
+		else
+			modebot = 'ed'; 
 
-		var options = {
-			host : 'bots-caipira.rhcloud.com',
-			path : msg
-		};
-
-		callback = function(response) {
-			var str = '';
-
-			// another chunk of data has been recieved, so append it to `str`
-			response.on('data', function(chunk) {
-				str += chunk;
-			});
-
-			// the whole response has been recieved, so we just print it out
-			// here
-			response.on('end', function() {
-				var text = JSON.parse(str).sentence_resp.trim();
-				text = text.replaceAll('<[^>]*>', '');
-
-				sendPRIVMSG(m.channel, m.nick + ': ' + text);
-			});
-		}
-
-		http.request(options, callback).end();
-	} catch (error) {
-		console.log(error);
+		console.log(modebot); 
 	}
+
+	var modebot  = 'ed'; 
+
+	this.edSays  =  function(m) {
+		try {
+			var msg = '/?bot='+encodeURIComponent(modebot)+'&msg='
+					+ encodeURIComponent(m.msg.substring(1, m.msg.length) || '');
+
+			var options = {
+				host : 'bots-caipira.rhcloud.com',
+				path : msg
+			};
+
+			callback = function(response) {
+				var str = '';
+
+				// another chunk of data has been recieved, so append it to `str`
+				response.on('data', function(chunk) {
+					str += chunk;
+				});
+
+				// the whole response has been recieved, so we just print it out
+				// here
+				response.on('end', function() {
+					var text;
+					if( modebot == 'ss') text = JSON.parse(str).sentence_resp;
+					else
+						text = JSON.parse(str).data; 
+
+					sendPRIVMSG(m.channel, m.nick + ': ' + text);
+				});
+			}
+
+			http.request(options, callback).end();
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	
 }
+
 // Função para tratamento ping request
 function onPingRequest(data) {
 	console.log('PONG');
