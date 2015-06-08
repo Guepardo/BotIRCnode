@@ -8,10 +8,10 @@ var clientTwitter = new Twitter({
   access_token_key: '189759942-jYe5zFt9fYFTMvKdc8kWtFL0EaYuxlMHCYokTKR1',
   access_token_secret: 'u4oIfp7GVyfVYhmsQarYjUEBT8XmluxbTCEQ7lzGEPqrg',
 });
-var HOST = 'irc.icq.com';
+var HOST = 'irc.slashnet.org';
 var PORT = 6667;
 var NICK = '[B]igBrother';
-var CHANNEL = '#brasil';
+var CHANNEL = '#apda';
 
 var status = false;
 
