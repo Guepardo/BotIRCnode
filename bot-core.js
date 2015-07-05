@@ -2,16 +2,18 @@ var net = require('net');
 var http = require('http');
 var Twitter = require('twitter');
 var bot  = new Bot();
+
 var clientTwitter = new Twitter({
   consumer_key: 'KPM9rOwkcjJxEjSNWvjIKE6B7',
   consumer_secret: '8jAaW5jebLPkKdMERAAWsx76jFQ4R8xVbUvFqH1E7ZGF3Yqp47',
   access_token_key: '189759942-jYe5zFt9fYFTMvKdc8kWtFL0EaYuxlMHCYokTKR1',
   access_token_secret: 'u4oIfp7GVyfVYhmsQarYjUEBT8XmluxbTCEQ7lzGEPqrg',
 });
-var HOST = 'irc.slashnet.org';
+
+var HOST = 'irc.icq.com';
 var PORT = 6667;
 var NICK = '[B]igBrother';
-var CHANNEL = '#apda';
+var CHANNEL = '#portuguese';
 
 var status = false;
 
@@ -44,6 +46,7 @@ function onMessage(data) {
 	count++;
 	data = new String(data);
 
+
 	if (data.indexOf('004') > -1) {
 		console.log('Você está logado no servidor');
 		client.write('JOIN ' + CHANNEL + ' \n\r');
@@ -67,6 +70,7 @@ function onMessage(data) {
 }
 // Function fot treatment PRIVMSG
 function onPRIVMSG(m) {
+	console.log(m); 
 	if (m.msg.indexOf('.') == 0 || m.msg.search(NICK) > -1)
 		bot.edSays(m);
 	if (m.msg.indexOf(':mode:') == 0 )
