@@ -10,10 +10,10 @@ var clientTwitter = new Twitter({
   access_token_secret: 'u4oIfp7GVyfVYhmsQarYjUEBT8XmluxbTCEQ7lzGEPqrg',
 });
 
-var HOST = 'irc.icq.com';
+var HOST = 'irc.virtualife.com.br';
 var PORT = 6667;
 var NICK = '[B]igBrother';
-var CHANNEL = '#portuguese';
+var CHANNEL = '#coroas';
 
 var status = false;
 
